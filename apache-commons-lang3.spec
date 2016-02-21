@@ -7,7 +7,7 @@
 
 Name:           %{?scl_prefix}%{pkg_name}
 Version:        3.1
-Release:        9.9%{?dist}
+Release:        9.10%{?dist}
 Summary:        Provides a host of helper utilities for the java.lang API
 License:        ASL 2.0
 URL:            http://commons.apache.org/%{base_name}
@@ -16,10 +16,10 @@ BuildArch:      noarch
 
 BuildRequires:  %{?scl_prefix_java_common}maven-local
 BuildRequires:  %{?scl_prefix_java_common}mvn(commons-io:commons-io)
-BuildRequires:  maven30-mvn(org.apache.commons:commons-parent:pom:) >= 26-7
-BuildRequires:  maven30-mvn(org.apache.maven.plugins:maven-assembly-plugin)
+BuildRequires:  %{?scl_prefix}mvn(org.apache.commons:commons-parent:pom:) >= 26-7
+BuildRequires:  %{?scl_prefix}mvn(org.apache.maven.plugins:maven-assembly-plugin)
 %if 0%{?rhel} <= 0
-BuildRequires:  maven30-mvn(org.easymock:easymock)
+BuildRequires:  %{?scl_prefix}mvn(org.easymock:easymock)
 %endif
 
 %description
@@ -47,19 +47,19 @@ Summary:        API documentation for %{pkg_name}
 
 %prep
 %setup -q -n %{short_name}-%{version}-src
-%{?scl:scl enable maven30 %{scl} - <<"EOF"}
+%{?scl:scl enable %{scl} - <<"EOF"}
 set -e -x
 %mvn_file : %{pkg_name} %{short_name}
 %{?scl:EOF}
 
 %build
-%{?scl:scl enable maven30 %{scl} - <<"EOF"}
+%{?scl:scl enable %{scl} - <<"EOF"}
 set -e -x
 %mvn_build %{?rhel:-f}
 %{?scl:EOF}
 
 %install
-%{?scl:scl enable maven30 %{scl} - <<"EOF"}
+%{?scl:scl enable %{scl} - <<"EOF"}
 set -e -x
 %mvn_install
 %{?scl:EOF}
@@ -71,6 +71,9 @@ set -e -x
 %doc LICENSE.txt NOTICE.txt
 
 %changelog
+* Mon Jan 11 2016 Michal Srb <msrb@redhat.com> - 3.1-9.10
+- maven33 rebuild #2
+
 * Sat Jan 09 2016 Michal Srb <msrb@redhat.com> - 3.1-9.9
 - maven33 rebuild
 
