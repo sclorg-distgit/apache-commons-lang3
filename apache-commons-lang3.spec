@@ -6,18 +6,22 @@
 %global short_name      commons-%{base_name}3
 
 Name:           %{?scl_prefix}%{pkg_name}
-Version:        3.1
-Release:        9.10%{?dist}
+Version:        3.4
+Release:        2.1%{?dist}
 Summary:        Provides a host of helper utilities for the java.lang API
 License:        ASL 2.0
 URL:            http://commons.apache.org/%{base_name}
 Source0:        http://archive.apache.org/dist/commons/%{base_name}/source/%{short_name}-%{version}-src.tar.gz
 BuildArch:      noarch
 
+# testParseSync() test fails on ARM and PPC64LE for unknown reason
+Patch0:         fix-ppc64le-test-failure.patch
+
 BuildRequires:  %{?scl_prefix_java_common}maven-local
 BuildRequires:  %{?scl_prefix_java_common}mvn(commons-io:commons-io)
-BuildRequires:  %{?scl_prefix}mvn(org.apache.commons:commons-parent:pom:) >= 26-7
+BuildRequires:  %{?scl_prefix}mvn(org.apache.commons:commons-parent:pom:)
 BuildRequires:  %{?scl_prefix}mvn(org.apache.maven.plugins:maven-assembly-plugin)
+BuildRequires:  %{?scl_prefix_java_common}mvn(org.hamcrest:hamcrest-all)
 %if 0%{?rhel} <= 0
 BuildRequires:  %{?scl_prefix}mvn(org.easymock:easymock)
 %endif
@@ -49,6 +53,7 @@ Summary:        API documentation for %{pkg_name}
 %setup -q -n %{short_name}-%{version}-src
 %{?scl:scl enable %{scl} - <<"EOF"}
 set -e -x
+%patch0
 %mvn_file : %{pkg_name} %{short_name}
 %{?scl:EOF}
 
@@ -71,48 +76,44 @@ set -e -x
 %doc LICENSE.txt NOTICE.txt
 
 %changelog
-* Mon Jan 11 2016 Michal Srb <msrb@redhat.com> - 3.1-9.10
-- maven33 rebuild #2
+* Mon Jan 18 2016 Michal Srb <msrb@redhat.com> - 3.4-2.1
+- Prepare for SCL build
 
-* Sat Jan 09 2016 Michal Srb <msrb@redhat.com> - 3.1-9.9
-- maven33 rebuild
+* Wed Jun 17 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.4-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
 
-* Wed Jan 14 2015 Mikolaj Izdebski <mizdebsk@redhat.com> - 3.1-9.8
-- Fix BR on apache-commons-parent
+* Tue May 12 2015 Alexander Kurtakov <akurtako@redhat.com> 3.4-1
+- Update to upstream 3.4.
 
-* Tue Jan 13 2015 Michael Simacek <msimacek@redhat.com> - 3.1-9.8
-- Mass rebuild 2015-01-13
+* Wed Jul 30 2014 Mikolaj Izdebski <mizdebsk@redhat.com> - 3.3.2-3
+- Fix build-requires on apache-commons-parent
 
-* Tue Jan 06 2015 Michael Simacek <msimacek@redhat.com> - 3.1-9.7
-- Mass rebuild 2015-01-06
+* Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.3.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
-* Mon May 26 2014 Mikolaj Izdebski <mizdebsk@redhat.com> - 3.1-9.6
-- Mass rebuild 2014-05-26
+* Mon Apr 14 2014 Mikolaj Izdebski <mizdebsk@redhat.com> - 3.3.2-1
+- Update to upstream version 3.3.2
 
-* Wed Feb 19 2014 Mikolaj Izdebski <mizdebsk@redhat.com> - 3.1-9.5
-- Mass rebuild 2014-02-19
+* Thu Mar 20 2014 Mikolaj Izdebski <mizdebsk@redhat.com> - 3.3.1-2
+- Disable test failing on PPC64LE
 
-* Tue Feb 18 2014 Mikolaj Izdebski <mizdebsk@redhat.com> - 3.1-9.4
-- Mass rebuild 2014-02-18
+* Thu Mar 20 2014 Mikolaj Izdebski <mizdebsk@redhat.com> - 3.3.1-1
+- Update to upstream version 3.3.1
 
-* Mon Feb 17 2014 Mikolaj Izdebski <mizdebsk@redhat.com> - 3.1-9.3
-- SCL-ize build-requires
+* Tue Mar 11 2014 Mikolaj Izdebski <mizdebsk@redhat.com> - 3.3-1
+- Update to upstream version 3.3
 
-* Thu Feb 13 2014 Mikolaj Izdebski <mizdebsk@redhat.com> - 3.1-9.2
-- Rebuild to regenerate auto-requires
+* Tue Mar 04 2014 Stanislav Ochotnicky <sochotnicky@redhat.com> - 3.2.1-2
+- Use Requires: java-headless rebuild (#1067528)
 
-* Tue Feb 11 2014 Mikolaj Izdebski <mizdebsk@redhat.com> - 3.1-9.1
-- First maven30 software collection build
+* Thu Jan  9 2014 Mikolaj Izdebski <mizdebsk@redhat.com> - 3.2.1-1
+- Update to upstream version 3.2.1
 
-* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 3.1-9
-- Mass rebuild 2013-12-27
+* Thu Jan  2 2014 Mikolaj Izdebski <mizdebsk@redhat.com> - 3.2-1
+- Update to upstream version 3.2
 
-* Fri Sep 20 2013 Mikolaj Izdebski <mizdebsk@redhat.com> - 3.1-8
-- Add BuildRequires on apache-commons-parent >= 26-7
-
-* Fri Jun 28 2013 Mikolaj Izdebski <mizdebsk@redhat.com> - 3.1-7
-- Rebuild to regenerate API documentation
-- Resolves: CVE-2013-1571
+* Sat Aug 03 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.1-7
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
 
 * Wed May 29 2013 Mikolaj Izdebski <mizdebsk@redhat.com> - 3.1-6
 - Build with xmvn
@@ -139,4 +140,3 @@ set -e -x
 
 * Thu Nov  3 2011 Stanislav Ochotnicky <sochotnicky@redhat.com> - 3.0.1-1
 - Initial version of the package
-
