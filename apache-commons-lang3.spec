@@ -7,7 +7,7 @@
 
 Name:           %{?scl_prefix}%{pkg_name}
 Version:        3.4
-Release:        2.1%{?dist}
+Release:        2.2%{?dist}
 Summary:        Provides a host of helper utilities for the java.lang API
 License:        ASL 2.0
 URL:            http://commons.apache.org/%{base_name}
@@ -17,7 +17,7 @@ BuildArch:      noarch
 # testParseSync() test fails on ARM and PPC64LE for unknown reason
 Patch0:         fix-ppc64le-test-failure.patch
 
-BuildRequires:  %{?scl_prefix_java_common}maven-local
+BuildRequires:  %{?scl_prefix}maven-local
 BuildRequires:  %{?scl_prefix_java_common}mvn(commons-io:commons-io)
 BuildRequires:  %{?scl_prefix}mvn(org.apache.commons:commons-parent:pom:)
 BuildRequires:  %{?scl_prefix}mvn(org.apache.maven.plugins:maven-assembly-plugin)
@@ -76,6 +76,9 @@ set -e -x
 %doc LICENSE.txt NOTICE.txt
 
 %changelog
+* Mon Feb 08 2016 Michal Srb <msrb@redhat.com> - 3.4-2.2
+- Fix BR on maven-local & co.
+
 * Mon Jan 18 2016 Michal Srb <msrb@redhat.com> - 3.4-2.1
 - Prepare for SCL build
 
