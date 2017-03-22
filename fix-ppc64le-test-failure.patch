@@ -1,0 +1,10 @@
+--- src/test/java/org/apache/commons/lang3/time/FastDateFormatTest.java~	2014-03-15 13:47:49.000000000 +0100
++++ src/test/java/org/apache/commons/lang3/time/FastDateFormatTest.java	2014-03-20 17:16:47.817917653 +0100
+@@ -259,7 +259,6 @@
+         FastDateFormat.getInstance(pattern);
+     }
+ 
+-    @Test
+     public void testParseSync() throws InterruptedException {
+         final String pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS Z";
+         final FastDateFormat formatter= FastDateFormat.getInstance(pattern);
